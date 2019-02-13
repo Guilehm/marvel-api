@@ -16,7 +16,8 @@ class Marvel:
         data = dict(ts=timestamp, apikey=self.public_key, hash=hashed_data)
         return data
 
-    def send_request(self, endpoint_path):
+    def send_request(self, endpoint_path, **kwargs):
         url = f'{self.base_url}{endpoint_path}'
-        auth_data = self.get_auth_data()
-        return requests.get(url, params=auth_data)
+        params = self.get_auth_data()
+        params.update(kwargs)
+        return requests.get(url, params=params)
