@@ -9,6 +9,7 @@ verify_ssl = true
 isort = "*"
 flake8 = "*"
 flask = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
