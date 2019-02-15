@@ -1,10 +1,12 @@
-from django.core.management.base import BaseCommand, CommandError
-from characters.models import Character
-from api.utils import Marvel
-from requests.exceptions import RequestException
-from marvel.settings import PRIVATE_KEY, PUBLIC_KEY
-from itertools import repeat
 from concurrent import futures
+from itertools import repeat
+
+from django.core.management.base import BaseCommand, CommandError
+from requests.exceptions import RequestException
+
+from api.utils import Marvel
+from characters.models import Character
+from marvel.settings import PRIVATE_KEY, PUBLIC_KEY
 
 MAX_WORKERS = 30
 
