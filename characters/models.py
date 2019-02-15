@@ -3,8 +3,9 @@ from django.contrib.postgres.fields import JSONField
 
 
 class Character(models.Model):
+    id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=512, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
 
