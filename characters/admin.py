@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from characters.models import Character, ComicItem, SeriesItem, StoryItem, EventItem
+from characters.models import Character, ComicItem, EventItem, SeriesItem, StoryItem
 
 
 @admin.register(Character)
