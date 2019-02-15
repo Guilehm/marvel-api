@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from characters.models import Character, ComicItem, SeriesItem, StoryItem
+from characters.models import Character, ComicItem, SeriesItem, StoryItem, EventItem
 
 
 @admin.register(Character)
@@ -19,6 +19,13 @@ class ComicItemAdmin(admin.ModelAdmin):
 
 @admin.register(SeriesItem)
 class SeriesItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name',)
+    list_filter = ('date_added', 'date_changed')
+    search_fields = ('id', 'name', 'resource_uri')
+
+
+@admin.register(EventItem)
+class EventItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
     search_fields = ('id', 'name', 'resource_uri')
