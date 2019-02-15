@@ -14,10 +14,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'start', help='Choose the first character to iterate.',
+            'start', help='Choose the first character to iterate.', type=int,
         )
         parser.add_argument(
-            'stop', help='Choose the last character to iterate.',
+            'stop', help='Choose the last character to iterate.', type=int,
         )
         parser.add_argument(
             '--api-version', help='API Version',
@@ -27,8 +27,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        start = int(options['start'])
-        stop = int(options['stop'])
+        start = options['start']
+        stop = options['stop']
 
         try:
             marvel = Marvel(PRIVATE_KEY, PUBLIC_KEY)
