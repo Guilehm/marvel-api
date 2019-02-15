@@ -15,6 +15,7 @@ requests = "*"
 django = "*"
 psycopg2 = "*"
 dj-database-url = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.6"
