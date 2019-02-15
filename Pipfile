@@ -9,8 +9,6 @@ flake8 = "*"
 isort = "*"
 
 [packages]
-isort = "*"
-flake8 = "*"
 requests = "*"
 django = "*"
 psycopg2 = "*"
