@@ -48,6 +48,7 @@ def get_results(marvel, offset):
         results = response.json()['data']['results']
     except RequestException:
         raise CommandError('Characters data could not be downloaded.')
+    print(f'Got response for "/characters/" with offset: {offset}.')
     return results
 
 
