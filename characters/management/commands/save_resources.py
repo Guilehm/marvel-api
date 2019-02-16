@@ -8,7 +8,7 @@ from api.utils import Marvel
 from characters.models import SeriesItem, EventItem, ComicItem, StoryItem
 from marvel.settings import PRIVATE_KEY, PUBLIC_KEY
 
-MAX_WORKERS = 25
+MAX_WORKERS = 5
 RESOURCES = dict(
     comics=ComicItem,
     series=SeriesItem,
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'event', help='Choose the event.', type=int,
+            'event', help='Choose the event.', type=str,
         )
         parser.add_argument(
             'start', help='Choose the first character to iterate.', type=int,
@@ -49,8 +49,7 @@ class Command(BaseCommand):
                 'Please check your environment variables for public and private keys.'
             )
 
-        results = get_all_results(marvel, event_name, start, stop)
-        create_all_resources(event_name, results)
+        get_all_results(marvel, event_name, start, stop)
 
 
 def get_results(marvel, resource_name, offset=0):
@@ -59,9 +58,10 @@ def get_results(marvel, resource_name, offset=0):
         response.raise_for_status()
         results = response.json()['data']['results']
     except RequestException:
-        import pdb; pdb.set_trace()
-        raise CommandError(f'{resource_name.title()} data could not be downloaded.')
+
+        raise CommandError(f'{resource_name.title()} data could not be downloaded. {response.status_code}')
     print(f'Got response for "/{resource_name}/" with offset: {offset}.')
+    create_all_resources(resource_name, results)
     return results
 
 
