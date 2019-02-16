@@ -3,12 +3,14 @@ from datetime import datetime
 
 import requests
 
+from marvel.settings import BASE_URL
+
 
 class Marvel:
     def __init__(self, private_key, public_key, api_version='v1'):
         self.private_key = private_key
         self.public_key = public_key
-        self.base_url = f'http://gateway.marvel.com/{api_version}/public/'
+        self.base_url = BASE_URL.format(api_version=api_version)
 
     def get_auth_data(self):
         timestamp = datetime.now().timestamp()
