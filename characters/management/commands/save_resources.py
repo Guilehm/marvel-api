@@ -8,7 +8,12 @@ from api.utils import Marvel
 from characters.models import SeriesItem, EventItem, ComicItem, StoryItem
 from marvel.settings import PRIVATE_KEY, PUBLIC_KEY
 
-MAX_WORKERS = 5
+REQUEST_COUNT = 0
+REQUEST_ERROR_COUNT = 0
+RESOURCES_CREATED = 0
+RESOURCES_UPDATED = 0
+
+MAX_WORKERS = 10
 RESOURCES = dict(
     comics=ComicItem,
     series=SeriesItem,
@@ -22,7 +27,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'event', help='Choose the event.', type=str,
+            'resource', help='Choose the resource.', type=str,
         )
         parser.add_argument(
             'start', help='Choose the first character to iterate.', type=int,
@@ -38,7 +43,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        event_name = options['event']
+        resource_name = options['resource']
         start = options['start']
         stop = options['stop']
 
@@ -49,24 +54,33 @@ class Command(BaseCommand):
                 'Please check your environment variables for public and private keys.'
             )
 
-        get_all_results(marvel, event_name, start, stop)
+        get_all_results(marvel, resource_name, start, stop)
+        print(f'{REQUEST_COUNT} requests')
+        print(f'{REQUEST_ERROR_COUNT} requests failed')
+        print(f'{RESOURCES_CREATED} resources created')
+        print(f'{RESOURCES_UPDATED} resources updated')
 
 
-def get_results(marvel, resource_name, offset=0):
+def get_results(marvel, resource_name, offset=0, limit=100):
+    print(f'Requesting for "/{resource_name}/" with offset: {offset}.')
     try:
-        response = marvel.send_request(resource_name, offset=offset)
+        response = marvel.send_request(resource_name, offset=offset, limit=limit)
+        global REQUEST_COUNT
+        REQUEST_COUNT += 1
         response.raise_for_status()
         results = response.json()['data']['results']
     except RequestException:
-
-        raise CommandError(f'{resource_name.title()} data could not be downloaded. {response.status_code}')
+        global REQUEST_ERROR_COUNT
+        REQUEST_ERROR_COUNT += 1
+        results = list()
+        print(f'{resource_name.title()} with offset: {offset} data could not be downloaded.')
     print(f'Got response for "/{resource_name}/" with offset: {offset}.')
     create_all_resources(resource_name, results)
     return results
 
 
 def get_all_results(marvel, resource_name, start, stop):
-    offsets = [number for number in range(start, stop, 20)]
+    offsets = [number for number in range(start, stop, 100)]
     with futures.ThreadPoolExecutor(MAX_WORKERS) as executor:
         results = [result for result in list(
             executor.map(get_results, repeat(marvel), repeat(resource_name), offsets)
@@ -85,8 +99,12 @@ def create_resource(resource_name, result):
         resource.save()
         if created:
             message = f'Creating {resource_name} {result["id"]} {result["title"]}.'
+            global RESOURCES_CREATED
+            RESOURCES_CREATED += 1
         else:
             message = f'{resource_name.title()} {result["id"]} {result["title"]} already exists.'
+            global RESOURCES_UPDATED
+            RESOURCES_UPDATED += 1
         print(message)
 
 
