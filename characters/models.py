@@ -25,6 +25,17 @@ class Character(models.Model):
         base_url = BASE_URL.format(api_version=api_version)
         return f'{base_url}characters/{self.id}/{resource_name}'
 
+    @property
+    def thumbnail_url(self):
+        try:
+            thumb = self.data['thumbnail']
+            path, extension = thumb.values()
+            filename = path.rpartition('/')[-1]
+            if filename != 'image_not_available':
+                return f"{path}.{extension}"
+        except (IndexError, TypeError):
+            return
+
 
 class ComicItem(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
