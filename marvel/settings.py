@@ -124,3 +124,4 @@ STATIC_URL = '/static/'
 
 PRIVATE_KEY = os.getenv('PRIVATE_KEY')
 PUBLIC_KEY = os.getenv('PUBLIC_KEY')
+BASE_URL = 'http://gateway.marvel.com/{api_version}/public/'

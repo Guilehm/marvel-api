@@ -1,6 +1,8 @@
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 
+from marvel.settings import BASE_URL
+
 
 class Character(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
@@ -18,6 +20,10 @@ class Character(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def get_resource_uri(self, resource_name, api_version='v1'):
+        base_url = BASE_URL.format(api_version=api_version)
+        return f'{base_url}characters/{self.id}/{resource_name}'
 
 
 class ComicItem(models.Model):
