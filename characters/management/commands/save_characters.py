@@ -68,9 +68,9 @@ def create_character(result):
         character, created = Character.objects.get_or_create(
             id=result['id'],
             name=result['name'],
-            description=result['description'],
-            resource_uri=result['resourceURI'],
         )
+        character.description = result['description']
+        character.resource_uri = result['resourceURI']
         character.data = result
         character.save()
         if created:
