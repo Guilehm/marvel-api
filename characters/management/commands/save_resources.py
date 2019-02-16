@@ -96,6 +96,9 @@ def create_resource(resource_name, result):
             name=result['title'],
         )
         resource.data = result
+        resource_type = result.get('type')
+        if resource_type:
+            resource.type = resource_type
         resource.save()
         if created:
             message = f'Creating {resource_name} {result["id"]} {result["title"]}.'
