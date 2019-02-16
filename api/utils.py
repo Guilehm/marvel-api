@@ -25,7 +25,7 @@ class Marvel:
         params.update(kwargs)
         return requests.get(url, params=params)
 
-    def send_request_uri(self, uri, limit=100, **kwargs):
+    def send_request_uri(self, uri, limit=20, **kwargs):
         url = f'{uri}'
         params = self.get_auth_data()
         params.update(limit=limit)
