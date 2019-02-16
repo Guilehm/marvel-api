@@ -10,10 +10,10 @@ class Character(models.Model):
     description = models.TextField(null=True, blank=True)
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
-    comics = models.ManyToManyField('characters.ComicItem', related_name='comics')
-    series = models.ManyToManyField('characters.SeriesItem', related_name='series')
-    events = models.ManyToManyField('characters.EventItem', related_name='events')
-    stories = models.ManyToManyField('characters.StoryItem', related_name='stories')
+    comics = models.ManyToManyField('characters.ComicItem', related_name='comics', blank=True)
+    series = models.ManyToManyField('characters.SeriesItem', related_name='series', blank=True)
+    events = models.ManyToManyField('characters.EventItem', related_name='events', blank=True)
+    stories = models.ManyToManyField('characters.StoryItem', related_name='stories', blank=True)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -24,6 +24,17 @@ class Character(models.Model):
     def get_resource_uri(self, resource_name, api_version='v1'):
         base_url = BASE_URL.format(api_version=api_version)
         return f'{base_url}characters/{self.id}/{resource_name}'
+
+    @property
+    def thumbnail_url(self):
+        try:
+            thumb = self.data['thumbnail']
+            path, extension = thumb.values()
+            filename = path.rpartition('/')[-1]
+            if filename != 'image_not_available':
+                return f"{path}.{extension}"
+        except (IndexError, TypeError):
+            return
 
 
 class ComicItem(models.Model):
