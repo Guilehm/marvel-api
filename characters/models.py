@@ -9,6 +9,14 @@ class Character(models.Model):
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
     comics = models.ManyToManyField('characters.ComicItem', related_name='comics')
+    series = models.ManyToManyField('characters.SeriesItem', related_name='series')
+    events = models.ManyToManyField('characters.EventItem', related_name='events')
+    stories = models.ManyToManyField('characters.StoryItem', related_name='stories')
+
+    comics_resource_uri = models.URLField(null=True, blank=True)
+    series_resource_uri = models.URLField(null=True, blank=True)
+    stories_resource_uri = models.URLField(null=True, blank=True)
+    events_resource_uri = models.URLField(null=True, blank=True)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
