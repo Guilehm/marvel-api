@@ -18,7 +18,7 @@ class Character(models.Model):
         through_fields=('character', 'comic')
     )
     series = models.ManyToManyField(
-        'characters.SeriesItem',
+        'characters.Series',
         related_name='characters',
         blank=True,
         through='CharacterSeries',
@@ -71,7 +71,7 @@ class CharacterComic(models.Model):
 
 class CharacterSeries(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    series = models.ForeignKey('characters.SeriesItem', on_delete=models.CASCADE)
+    series = models.ForeignKey('characters.Series', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -106,7 +106,7 @@ class Comic(models.Model):
         return f'{self.name}'
 
 
-class SeriesItem(models.Model):
+class Series(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     resource_uri = models.URLField(null=True, blank=True)
