@@ -61,19 +61,6 @@ class Character(models.Model):
             return
 
 
-class ComicItem(models.Model):
-    id = models.CharField(primary_key=True, max_length=50)
-    name = models.CharField(max_length=255)
-    resource_uri = models.URLField(null=True, blank=True)
-    data = JSONField(null=True, blank=True)
-
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_changed = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class CharacterComic(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
     comic = models.ForeignKey('characters.ComicItem', on_delete=models.CASCADE)
@@ -104,6 +91,19 @@ class CharacterStory(models.Model):
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
+
+
+class ComicItem(models.Model):
+    id = models.CharField(primary_key=True, max_length=50)
+    name = models.CharField(max_length=255)
+    resource_uri = models.URLField(null=True, blank=True)
+    data = JSONField(null=True, blank=True)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class SeriesItem(models.Model):
