@@ -32,7 +32,7 @@ class Character(models.Model):
         through_fields=('character', 'event')
     )
     stories = models.ManyToManyField(
-        'characters.StoryItem',
+        'characters.Story',
         related_name='characters',
         blank=True,
         through='CharacterStory',
@@ -87,7 +87,7 @@ class CharacterEvent(models.Model):
 
 class CharacterStory(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    story = models.ForeignKey('characters.StoryItem', on_delete=models.CASCADE)
+    story = models.ForeignKey('characters.Story', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -135,7 +135,7 @@ class Event(models.Model):
         return f'{self.name}'
 
 
-class StoryItem(models.Model):
+class Story(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
