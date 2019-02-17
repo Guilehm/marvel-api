@@ -3,27 +3,31 @@ from django.contrib import admin
 from characters.models import Character, ComicItem, EventItem, SeriesItem, StoryItem
 
 
-class CharacterComicItemInline(admin.StackedInline):
+class CharacterComicItemInline(admin.TabularInline):
     model = ComicItem.characters.through
-    raw_id_fields = ('comicitem',)
+    raw_id_fields = ('comic',)
+    classes = ('collapse',)
     extra = 0
 
 
-class CharacterSeriesItemInline(admin.StackedInline):
+class CharacterSeriesItemInline(admin.TabularInline):
     model = SeriesItem.characters.through
-    raw_id_fields = ('seriesitem',)
+    raw_id_fields = ('series',)
+    classes = ('collapse',)
     extra = 0
 
 
-class CharacterEventsItemInline(admin.StackedInline):
+class CharacterEventsItemInline(admin.TabularInline):
     model = EventItem.characters.through
-    raw_id_fields = ('eventitem',)
+    raw_id_fields = ('event',)
+    classes = ('collapse',)
     extra = 0
 
 
-class CharacterStoriesItemInline(admin.StackedInline):
+class CharacterStoriesItemInline(admin.TabularInline):
     model = StoryItem.characters.through
-    raw_id_fields = ('storyitem',)
+    raw_id_fields = ('story',)
+    classes = ('collapse',)
     extra = 0
 
 

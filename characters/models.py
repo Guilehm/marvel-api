@@ -10,10 +10,34 @@ class Character(models.Model):
     description = models.TextField(null=True, blank=True)
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
-    comics = models.ManyToManyField('characters.ComicItem', related_name='characters', blank=True)
-    series = models.ManyToManyField('characters.SeriesItem', related_name='characters', blank=True)
-    events = models.ManyToManyField('characters.EventItem', related_name='characters', blank=True)
-    stories = models.ManyToManyField('characters.StoryItem', related_name='characters', blank=True)
+    comics = models.ManyToManyField(
+        'characters.ComicItem',
+        related_name='characters',
+        blank=True,
+        through='CharacterComic',
+        through_fields=('character', 'comic')
+    )
+    series = models.ManyToManyField(
+        'characters.SeriesItem',
+        related_name='characters',
+        blank=True,
+        through='CharacterSeries',
+        through_fields=('character', 'series')
+    )
+    events = models.ManyToManyField(
+        'characters.EventItem',
+        related_name='characters',
+        blank=True,
+        through='CharacterEvent',
+        through_fields=('character', 'event')
+    )
+    stories = models.ManyToManyField(
+        'characters.StoryItem',
+        related_name='characters',
+        blank=True,
+        through='CharacterStory',
+        through_fields=('character', 'story')
+    )
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -48,6 +72,38 @@ class ComicItem(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+
+class CharacterComic(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    comic = models.ForeignKey('characters.ComicItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterSeries(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    series = models.ForeignKey('characters.SeriesItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterEvent(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    event = models.ForeignKey('characters.EventItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterStory(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    story = models.ForeignKey('characters.StoryItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
 
 
 class SeriesItem(models.Model):

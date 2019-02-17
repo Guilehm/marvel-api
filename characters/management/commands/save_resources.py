@@ -13,7 +13,7 @@ REQUEST_ERROR_COUNT = 0
 RESOURCES_CREATED = 0
 RESOURCES_UPDATED = 0
 
-MAX_WORKERS = 10
+MAX_WORKERS = 35
 RESOURCES = dict(
     comics=ComicItem,
     series=SeriesItem,

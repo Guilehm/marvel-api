@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
 def get_results(marvel, offset):
     try:
-        response = marvel.send_request('characters', offset=offset)
+        response = marvel.send_request('characters', offset=offset, limit=100)
         response.raise_for_status()
         results = response.json()['data']['results']
     except RequestException:
@@ -55,7 +55,7 @@ def get_results(marvel, offset):
 
 
 def get_all_results(marvel, start, stop):
-    offsets = [number for number in range(start, stop, 20)]
+    offsets = [number for number in range(start, stop, 100)]
     with futures.ThreadPoolExecutor(MAX_WORKERS) as executor:
         results = [result for result in list(
             executor.map(get_results, repeat(marvel), offsets)

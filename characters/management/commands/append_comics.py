@@ -2,7 +2,7 @@ from concurrent import futures
 
 from django.core.management.base import BaseCommand
 
-from characters.models import Character, ComicItem
+from characters.models import Character, ComicItem, CharacterComic
 
 MAX_WORKERS = 30
 CHARACTERS_FOUND = 0
@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
         print(f'{CHARACTERS_FOUND} Characters found')
         print(f'{CHARACTERS_NOT_FOUND} Characters not found')
-        print(f'{CHARACTERS_NOT_FOUND} Associations')
+        print(f'{ASSOCIATIONS} Associations')
 
 
 def associate_comic_to_characters(comic):
@@ -38,9 +38,15 @@ def associate_comic_to_characters(comic):
             CHARACTERS_NOT_FOUND += 1
             continue
         global CHARACTERS_FOUND
-        global ASSOCIATIONS
         CHARACTERS_FOUND += 1
-        character.comics.add(comic)
-        print(f'\t\tAssociating {comic} to {character}')
+        character_comic, created = CharacterComic.objects.get_or_create(
+            character=character, comic=comic
+        )
+        if created:
+            global ASSOCIATIONS
+            ASSOCIATIONS += 1
+            print(f'\t\tAssociating {comic} to {character}')
+        else:
+            print(f'\t\tAssociation for {comic} to {character} already exists.')
 
     print(f'\tEnd of process for {comic}\n')
