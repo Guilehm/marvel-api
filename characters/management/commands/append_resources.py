@@ -21,7 +21,7 @@ RESOURCES = dict(
 
 
 class Command(BaseCommand):
-    help = 'Get comics and append to respective Characters'
+    help = 'Get resource and append to respective Characters'
 
     def add_arguments(self, parser):
         parser.add_argument(
