@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from characters.models import Character, Comic, EventItem, SeriesItem, StoryItem
+from characters.models import Character, Comic, EventItem, Series, StoryItem
 
 
 class CharacterComicInline(admin.TabularInline):
@@ -10,8 +10,8 @@ class CharacterComicInline(admin.TabularInline):
     extra = 0
 
 
-class CharacterSeriesItemInline(admin.TabularInline):
-    model = SeriesItem.characters.through
+class CharacterSeriesInline(admin.TabularInline):
+    model = Series.characters.through
     raw_id_fields = ('series',)
     classes = ('collapse',)
     extra = 0
@@ -39,7 +39,7 @@ class CharacterAdmin(admin.ModelAdmin):
     exclude = ('comics', 'series', 'events', 'stories')
     inlines = (
         CharacterComicInline,
-        CharacterSeriesItemInline,
+        CharacterSeriesInline,
         CharacterEventsItemInline,
         CharacterStoriesItemInline,
     )
@@ -52,7 +52,7 @@ class ComicAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name', 'resource_uri')
 
 
-@admin.register(SeriesItem)
+@admin.register(Series)
 class SeriesItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
