@@ -118,6 +118,9 @@ class Series(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name_plural = 'series'
+
 
 class EventItem(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
