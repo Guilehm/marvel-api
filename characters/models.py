@@ -11,28 +11,28 @@ class Character(models.Model):
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
     comics = models.ManyToManyField(
-        'characters.ComicItem',
+        'characters.Comic',
         related_name='characters',
         blank=True,
         through='CharacterComic',
         through_fields=('character', 'comic')
     )
     series = models.ManyToManyField(
-        'characters.SeriesItem',
+        'characters.Series',
         related_name='characters',
         blank=True,
         through='CharacterSeries',
         through_fields=('character', 'series')
     )
     events = models.ManyToManyField(
-        'characters.EventItem',
+        'characters.Event',
         related_name='characters',
         blank=True,
         through='CharacterEvent',
         through_fields=('character', 'event')
     )
     stories = models.ManyToManyField(
-        'characters.StoryItem',
+        'characters.Story',
         related_name='characters',
         blank=True,
         through='CharacterStory',
@@ -61,22 +61,9 @@ class Character(models.Model):
             return
 
 
-class ComicItem(models.Model):
-    id = models.CharField(primary_key=True, max_length=50)
-    name = models.CharField(max_length=255)
-    resource_uri = models.URLField(null=True, blank=True)
-    data = JSONField(null=True, blank=True)
-
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_changed = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class CharacterComic(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    comic = models.ForeignKey('characters.ComicItem', on_delete=models.CASCADE)
+    comic = models.ForeignKey('characters.Comic', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -84,7 +71,7 @@ class CharacterComic(models.Model):
 
 class CharacterSeries(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    series = models.ForeignKey('characters.SeriesItem', on_delete=models.CASCADE)
+    series = models.ForeignKey('characters.Series', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -92,7 +79,7 @@ class CharacterSeries(models.Model):
 
 class CharacterEvent(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    event = models.ForeignKey('characters.EventItem', on_delete=models.CASCADE)
+    event = models.ForeignKey('characters.Event', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -100,13 +87,13 @@ class CharacterEvent(models.Model):
 
 class CharacterStory(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    story = models.ForeignKey('characters.StoryItem', on_delete=models.CASCADE)
+    story = models.ForeignKey('characters.Story', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
 
 
-class SeriesItem(models.Model):
+class Comic(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     resource_uri = models.URLField(null=True, blank=True)
@@ -119,7 +106,23 @@ class SeriesItem(models.Model):
         return f'{self.name}'
 
 
-class EventItem(models.Model):
+class Series(models.Model):
+    id = models.CharField(primary_key=True, max_length=50)
+    name = models.CharField(max_length=255)
+    resource_uri = models.URLField(null=True, blank=True)
+    data = JSONField(null=True, blank=True)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name_plural = 'series'
+
+
+class Event(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     resource_uri = models.URLField(null=True, blank=True)
@@ -132,7 +135,7 @@ class EventItem(models.Model):
         return f'{self.name}'
 
 
-class StoryItem(models.Model):
+class Story(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
@@ -144,3 +147,6 @@ class StoryItem(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    class Meta:
+        verbose_name_plural = 'stories'

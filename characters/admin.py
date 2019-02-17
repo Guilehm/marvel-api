@@ -1,31 +1,31 @@
 from django.contrib import admin
 
-from characters.models import Character, ComicItem, EventItem, SeriesItem, StoryItem
+from characters.models import Character, Comic, Event, Series, Story
 
 
-class CharacterComicItemInline(admin.TabularInline):
-    model = ComicItem.characters.through
+class CharacterComicInline(admin.TabularInline):
+    model = Comic.characters.through
     raw_id_fields = ('comic',)
     classes = ('collapse',)
     extra = 0
 
 
-class CharacterSeriesItemInline(admin.TabularInline):
-    model = SeriesItem.characters.through
+class CharacterSeriesInline(admin.TabularInline):
+    model = Series.characters.through
     raw_id_fields = ('series',)
     classes = ('collapse',)
     extra = 0
 
 
-class CharacterEventsItemInline(admin.TabularInline):
-    model = EventItem.characters.through
+class CharacterEventInline(admin.TabularInline):
+    model = Event.characters.through
     raw_id_fields = ('event',)
     classes = ('collapse',)
     extra = 0
 
 
-class CharacterStoriesItemInline(admin.TabularInline):
-    model = StoryItem.characters.through
+class CharacterStoryInline(admin.TabularInline):
+    model = Story.characters.through
     raw_id_fields = ('story',)
     classes = ('collapse',)
     extra = 0
@@ -38,35 +38,35 @@ class CharacterAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name', 'resource_uri')
     exclude = ('comics', 'series', 'events', 'stories')
     inlines = (
-        CharacterComicItemInline,
-        CharacterSeriesItemInline,
-        CharacterEventsItemInline,
-        CharacterStoriesItemInline,
+        CharacterComicInline,
+        CharacterSeriesInline,
+        CharacterEventInline,
+        CharacterStoryInline,
     )
 
 
-@admin.register(ComicItem)
-class ComicItemAdmin(admin.ModelAdmin):
+@admin.register(Comic)
+class ComicAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
     search_fields = ('id', 'name', 'resource_uri')
 
 
-@admin.register(SeriesItem)
+@admin.register(Series)
 class SeriesItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
     search_fields = ('id', 'name', 'resource_uri')
 
 
-@admin.register(EventItem)
+@admin.register(Event)
 class EventItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
     search_fields = ('id', 'name', 'resource_uri')
 
 
-@admin.register(StoryItem)
+@admin.register(Story)
 class StoryItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'type')
     list_filter = ('type', 'date_added', 'date_changed')
