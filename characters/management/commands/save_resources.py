@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 from requests.exceptions import RequestException
 
 from api.utils import Marvel
-from characters.models import Comic, EventItem, Series, StoryItem
+from characters.models import Comic, Event, Series, StoryItem
 from marvel.settings import PRIVATE_KEY, PUBLIC_KEY
 
 REQUEST_COUNT = 0
@@ -17,7 +17,7 @@ MAX_WORKERS = 35
 RESOURCES = dict(
     comics=Comic,
     series=Series,
-    events=EventItem,
+    events=Event,
     stories=StoryItem,
 )
 
