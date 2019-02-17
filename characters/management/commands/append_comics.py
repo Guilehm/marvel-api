@@ -2,7 +2,7 @@ from concurrent import futures
 
 from django.core.management.base import BaseCommand
 
-from characters.models import Character, ComicItem, CharacterComic
+from characters.models import Character, Comic, CharacterComic
 
 MAX_WORKERS = 30
 CHARACTERS_FOUND = 0
@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = 'Get comics and append to respective Characters'
 
     def handle(self, *args, **options):
-        comics = ComicItem.objects.all()
+        comics = Comic.objects.all()
         with futures.ThreadPoolExecutor(MAX_WORKERS) as executor:
             executor.map(associate_comic_to_characters, comics)
 
