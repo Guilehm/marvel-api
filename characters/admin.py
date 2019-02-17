@@ -5,25 +5,29 @@ from characters.models import Character, ComicItem, EventItem, SeriesItem, Story
 
 class CharacterComicItemInline(admin.StackedInline):
     model = ComicItem.characters.through
-    raw_id_fields = ('comicitem',)
+    raw_id_fields = ('comic',)
+    classes = ('collapse',)
     extra = 0
 
 
 class CharacterSeriesItemInline(admin.StackedInline):
     model = SeriesItem.characters.through
-    raw_id_fields = ('seriesitem',)
+    raw_id_fields = ('series',)
+    classes = ('collapse',)
     extra = 0
 
 
 class CharacterEventsItemInline(admin.StackedInline):
     model = EventItem.characters.through
-    raw_id_fields = ('eventitem',)
+    raw_id_fields = ('event',)
+    classes = ('collapse',)
     extra = 0
 
 
 class CharacterStoriesItemInline(admin.StackedInline):
     model = StoryItem.characters.through
-    raw_id_fields = ('storyitem',)
+    raw_id_fields = ('story',)
+    classes = ('collapse',)
     extra = 0
 
 
