@@ -50,6 +50,38 @@ class ComicItem(models.Model):
         return f'{self.name}'
 
 
+class CharacterComic(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    comic = models.ForeignKey('characters.ComicItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterSeries(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    series = models.ForeignKey('characters.SeriesItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterEvent(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    event = models.ForeignKey('characters.EventItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
+class CharacterStory(models.Model):
+    character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
+    story = models.ForeignKey('characters.StoryItem', on_delete=models.CASCADE)
+
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_changed = models.DateTimeField(auto_now=True)
+
+
 class SeriesItem(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
