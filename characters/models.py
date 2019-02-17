@@ -25,7 +25,7 @@ class Character(models.Model):
         through_fields=('character', 'series')
     )
     events = models.ManyToManyField(
-        'characters.EventItem',
+        'characters.Event',
         related_name='characters',
         blank=True,
         through='CharacterEvent',
@@ -79,7 +79,7 @@ class CharacterSeries(models.Model):
 
 class CharacterEvent(models.Model):
     character = models.ForeignKey('characters.Character', on_delete=models.CASCADE)
-    event = models.ForeignKey('characters.EventItem', on_delete=models.CASCADE)
+    event = models.ForeignKey('characters.Event', on_delete=models.CASCADE)
 
     date_added = models.DateTimeField(auto_now_add=True)
     date_changed = models.DateTimeField(auto_now=True)
@@ -122,7 +122,7 @@ class Series(models.Model):
         verbose_name_plural = 'series'
 
 
-class EventItem(models.Model):
+class Event(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=255)
     resource_uri = models.URLField(null=True, blank=True)
