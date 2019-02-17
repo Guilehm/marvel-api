@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from characters.models import Character, ComicItem, EventItem, SeriesItem, StoryItem
+from characters.models import Character, Comic, EventItem, SeriesItem, StoryItem
 
 
-class CharacterComicItemInline(admin.TabularInline):
-    model = ComicItem.characters.through
+class CharacterComicInline(admin.TabularInline):
+    model = Comic.characters.through
     raw_id_fields = ('comic',)
     classes = ('collapse',)
     extra = 0
@@ -38,15 +38,15 @@ class CharacterAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name', 'resource_uri')
     exclude = ('comics', 'series', 'events', 'stories')
     inlines = (
-        CharacterComicItemInline,
+        CharacterComicInline,
         CharacterSeriesItemInline,
         CharacterEventsItemInline,
         CharacterStoriesItemInline,
     )
 
 
-@admin.register(ComicItem)
-class ComicItemAdmin(admin.ModelAdmin):
+@admin.register(Comic)
+class ComicAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     list_filter = ('date_added', 'date_changed')
     search_fields = ('id', 'name', 'resource_uri')
