@@ -137,7 +137,7 @@ class Event(models.Model):
 
 class Story(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(max_length=255)
     resource_uri = models.URLField(null=True, blank=True)
     data = JSONField(null=True, blank=True)
