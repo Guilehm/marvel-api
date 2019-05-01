@@ -11,7 +11,7 @@ isort = "*"
 [packages]
 requests = "*"
 django = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 dj-database-url = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
